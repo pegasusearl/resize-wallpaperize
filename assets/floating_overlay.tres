@@ -1,0 +1,14 @@
+[gd_resource type="Theme" load_steps=4 format=2]
+
+[ext_resource path="res://assets/floating_button_normal.tres" type="StyleBox" id=1]
+[ext_resource path="res://assets/floating_button_hover.tres" type="StyleBox" id=2]
+
+[sub_resource type="StyleBoxLine" id=1]
+color = Color( 1, 0.4, 0, 1 )
+thickness = 4
+
+[resource]
+Button/styles/focus = SubResource( 1 )
+Button/styles/hover = ExtResource( 2 )
+Button/styles/normal = ExtResource( 1 )
+Button/styles/pressed = null
