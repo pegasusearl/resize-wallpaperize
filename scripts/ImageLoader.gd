@@ -2,8 +2,16 @@ extends Control
 
 
 onready var node = $TextureRect
+onready var thumbnail_node = $ThumbnailGenerator/ThumbViewer
 onready var info_node = $Label
 onready var action_info_node = $Actions
+onready var image_list = $ImageList
+
+onready var ignore_button = $Panel/Ignore
+onready var clear_button = $Panel/Clear
+onready var controller_panel = $Panel
+onready var grid_node = $DrawGrid
+onready var background_picker = $Panel/BackgroundPicker
 
 #filetype
 var full_path := ""
@@ -16,16 +24,22 @@ var aspect_ratio := 1.777777778
 var image_scale := 1.0
 
 func _ready():
-	load_image("/mnt/warehouse/Pictures/Pixiv/100639347_p0.jpg")
+	pass
+	#load_image("/mnt/warehouse/Pictures/Pixiv/100639347_p0.jpg")
 	#load_image("/mnt/warehouse/Pictures/Pixiv/64568561_p0.jpg")
 
 
 func load_image(image_full_path:String):
+	var dir = Directory.new()
+	if not dir.file_exists(image_full_path):
+		return ERR_DOES_NOT_EXIST
 	full_path = image_full_path
 	
 	image_scale = 1.0
 	node.rect_size = Vector2.ZERO
 	node.rect_position = Vector2.ZERO
+	ignore_button.pressed = false
+	clear_button.disabled = true
 	
 	var image = ImageTexture.new()
 	image.load(full_path)
@@ -39,6 +53,15 @@ func load_image(image_full_path:String):
 		jpg_quality = int( run_command("identify",["-format",'%Q',full_path]) )
 		info += "JPG saved quality: \t"+ str(jpg_quality) +"\n"
 	
+	if jpg_quality > 92:
+		denoise = 0
+	elif jpg_quality > 82:
+		denoise = 1
+	elif jpg_quality > 72:
+		denoise = 2
+	else:
+		denoise = 3
+	
 	resolution = image.get_size()
 	info += "Resolution \t"+ str(resolution) +"\n"
 	
@@ -48,6 +71,8 @@ func load_image(image_full_path:String):
 	node.rect_size = resolution
 	
 	info_node.text = info
+	_on_DefaultFit_pressed()
+	return OK
 
 
 var dragging := false
@@ -71,6 +96,8 @@ func _unhandled_input(event):
 		elif event.button_index == 1:
 			last_image_viewed_position = node.rect_position
 			dragging = true
+		
+		update_info()
 	
 	elif dragging == true and event is InputEventMouseMotion:
 		node.rect_position += event.relative
@@ -79,11 +106,15 @@ func _unhandled_input(event):
 				node.rect_position.y = last_image_viewed_position.y
 			else:
 				node.rect_position.x = last_image_viewed_position.x
+		
+		update_info()
 
 
 func _input(event):
 	if dragging and event is InputEventMouseButton and event.button_index == 1 and !event.pressed:
 		dragging = false
+		
+		update_info()
 
 
 var target_size:Vector2
@@ -95,8 +126,60 @@ var mini_target_size:Vector2
 var extend_top:float
 var extend_left:float
 var background:Color setget set_background
+var ignored := false
+
+func get_metadata():
+	update_info()
+	return [
+		target_size, #0
+		origin, #1
+		crop_size, #2
+		upscale, #3
+		denoise, #4
+		mini_target_size, #5
+		extend_top, #6
+		extend_left, #7
+		background, #8
+		ignored, #9
+		
+		node.rect_size, #10
+		node.rect_position, #11
+		image_scale, #12
+	]
+
+
+func set_metadata(new_metadata:Array):
+	target_size = new_metadata[0]
+	origin = new_metadata[1]
+	crop_size = new_metadata[2]
+	upscale = new_metadata[3]
+	denoise = new_metadata[4]
+	mini_target_size = new_metadata[5]
+	extend_top = new_metadata[6]
+	extend_left = new_metadata[7]
+	
+	#background = new_metadata[8]
+	set_background(new_metadata[8])
+	background_picker.color = background
+	
+	ignored = new_metadata[9]
+	ignore_button.pressed = ignored
+	
+	node.rect_size = new_metadata[10]
+	node.rect_position = new_metadata[11]
+	image_scale = new_metadata[12]
+	
+	update_info()
+
 
 func _process(delta):
+	if Input.is_action_just_pressed("shift"):
+		show_hud(false)
+	elif Input.is_action_just_released("shift"):
+		show_hud(true)
+
+
+func update_info():
 	target_size = get_viewport().size
 	var info_text := ""
 	
@@ -115,14 +198,13 @@ func _process(delta):
 	
 	info_text += "\n== Upscale w2x ==\n"
 	
-	upscale = 2
+	upscale = 1
 	var upscaled_size = crop_size*upscale
 	while upscaled_size.x < target_size.x or upscaled_size.y < target_size.y:
 		upscale = upscale*2
 		upscaled_size = crop_size*upscale
 	info_text += "Upscale: "+str("x",upscale)+"\n"
 	
-	denoise = 0
 	info_text += "Denoise: "+str(denoise,"/3")+"\n"
 	
 	## resize
@@ -150,6 +232,9 @@ func run_command(command:String,arguments:Array=[]) -> String:
 
 func show_hud(show_them:bool):
 	info_node.visible = show_them
+	action_info_node.visible = show_them
+	image_list.request_visibility = show_them
+	controller_panel.visible = show_them
 
 
 func take_snapshot(path:String) -> void:
@@ -160,30 +245,18 @@ func take_snapshot(path:String) -> void:
 	img.save_png(path)
 
 
-func _on_DefaultFit_pressed():
-	var target_size = get_viewport().size
-	node.rect_size.x = target_size.x
-	node.rect_size.y = target_size.x/aspect_ratio
-	image_scale = node.rect_size.x/resolution.x
-	
-	#repositioning
-	var delta_size:float = node.rect_size.y-target_size.y
-	node.rect_position.x = 0.0
-	node.rect_position.y = -delta_size/2
-	
-	if node.rect_size.y < target_size.y:
-		node.rect_size.y = target_size.y
-		node.rect_size.x = target_size.y*aspect_ratio
-		image_scale = node.rect_size.x/resolution.x
-		
-		var delta_size2:float = node.rect_size.x-target_size.x
-		node.rect_position.y = 0.0
-		node.rect_position.x = -delta_size2/2
-
-
 func set_background(color):
 	background = color
 	$BG.modulate = color
+
+
+func convert_operation_meta(source_path:String,target_path:String,metadata:Array):
+	convert_operation(source_path,target_path,
+			metadata[2],metadata[1],
+			metadata[3],metadata[4],
+			metadata[5],metadata[8],metadata[7],metadata[6],
+			metadata[0]
+			)
 
 
 func convert_operation(source_path:String,target_path:String,
@@ -193,7 +266,7 @@ func convert_operation(source_path:String,target_path:String,
 		target_size:Vector2):
 	var working_path := "/tmp"
 	var file_name := source_path.get_file()
-	var working_filepath := working_path+"/"+file_name
+	var working_filepath := working_path+"/"+file_name+".png"
 	#crop
 	run_command("convert",[source_path,"-crop",
 			str(crop_size.x,"x",crop_size.y,"+",origin.x,"+",origin.y),
@@ -211,6 +284,9 @@ func convert_operation(source_path:String,target_path:String,
 	#resize
 	run_command("magick",[working_filepath,"-resize",str(target_size.x,"x",target_size.y),
 	target_path])
+	#delete working file
+	var dir = Directory.new()
+	dir.remove(working_filepath)
 
 
 func _on_TestMagick_pressed():
@@ -253,3 +329,52 @@ func _on_StickRight_pressed():
 
 func _on_StickDown_pressed():
 	node.rect_position.y = target_size.y-node.rect_size.y
+
+
+func _on_CenterFit_pressed():
+	target_size = get_viewport().size
+	node.rect_size.y = target_size.y
+	node.rect_size.x = target_size.y*aspect_ratio
+	image_scale = node.rect_size.x/resolution.x
+	
+	#repositioning
+	var delta_size2:float = node.rect_size.x-target_size.x
+	node.rect_position.y = 0.0
+	node.rect_position.x = -delta_size2/2
+	
+	if node.rect_size.x > target_size.x:
+		target_size = get_viewport().size
+		node.rect_size.x = target_size.x
+		node.rect_size.y = target_size.x/aspect_ratio
+		image_scale = node.rect_size.x/resolution.x
+		
+		#repositioning
+		var delta_size:float = node.rect_size.y-target_size.y
+		node.rect_position.x = 0.0
+		node.rect_position.y = -delta_size/2
+
+
+func _on_DefaultFit_pressed():
+	target_size = get_viewport().size
+	node.rect_size.x = target_size.x
+	node.rect_size.y = target_size.x/aspect_ratio
+	image_scale = node.rect_size.x/resolution.x
+	
+	#repositioning
+	var delta_size:float = node.rect_size.y-target_size.y
+	node.rect_position.x = 0.0
+	node.rect_position.y = -delta_size/2
+	
+	if node.rect_size.y < target_size.y:
+		node.rect_size.y = target_size.y
+		node.rect_size.x = target_size.y*aspect_ratio
+		image_scale = node.rect_size.x/resolution.x
+		
+		#repositioning
+		var delta_size2:float = node.rect_size.x-target_size.x
+		node.rect_position.y = 0.0
+		node.rect_position.x = -delta_size2/2
+
+
+func _on_Ignore_toggled(button_pressed):
+	ignored = button_pressed
