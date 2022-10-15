@@ -26,7 +26,7 @@ func refresh_visibility():
 func _input(event):
 	if event is InputEventMouseMotion:
 		var mouse_position = get_local_mouse_position()
-		set_hover_visibility(mouse_position.x > 0)
+		set_hover_visibility(mouse_position.x > 0 and mouse_position.y < rect_size.y)
 
 
 var item_list = []

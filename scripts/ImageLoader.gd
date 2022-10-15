@@ -2,7 +2,6 @@ extends Control
 
 
 onready var node = $TextureRect
-onready var thumbnail_node = $ThumbnailGenerator/ThumbViewer
 onready var info_node = $Label
 onready var action_info_node = $Actions
 onready var image_list = $ImageList
@@ -317,18 +316,26 @@ func _on_TestMagick_pressed():
 
 func _on_StickUp_pressed():
 	node.rect_position.y = 0.0
+	
+	update_info()
 
 
 func _on_StickLeft_pressed():
 	node.rect_position.x = 0.0
+	
+	update_info()
 
 
 func _on_StickRight_pressed():
 	node.rect_position.x = target_size.x-node.rect_size.x
+	
+	update_info()
 
 
 func _on_StickDown_pressed():
 	node.rect_position.y = target_size.y-node.rect_size.y
+	
+	update_info()
 
 
 func _on_CenterFit_pressed():
@@ -352,6 +359,8 @@ func _on_CenterFit_pressed():
 		var delta_size:float = node.rect_size.y-target_size.y
 		node.rect_position.x = 0.0
 		node.rect_position.y = -delta_size/2
+	
+	update_info()
 
 
 func _on_DefaultFit_pressed():
@@ -374,6 +383,8 @@ func _on_DefaultFit_pressed():
 		var delta_size2:float = node.rect_size.x-target_size.x
 		node.rect_position.y = 0.0
 		node.rect_position.x = -delta_size2/2
+	
+	update_info()
 
 
 func _on_Ignore_toggled(button_pressed):
