@@ -1,7 +1,8 @@
 extends Control
 
 
-onready var node = $TextureRect
+onready var node = $Viewport/TextureRect
+onready var bg_node = $Viewport/BG
 onready var info_node = $Label
 onready var action_info_node = $Actions
 onready var image_list = $ImageList
@@ -21,8 +22,15 @@ var aspect_ratio := 1.777777778
 
 #viewer
 var image_scale := 1.0
+var thumbnail_size:Vector2
 
 func _ready():
+	var main_viewport_size = get_viewport().size
+	thumbnail_size = Vector2(128, floor(128.0/main_viewport_size.x*main_viewport_size.y) )
+	image_list.fixed_icon_size = thumbnail_size
+	$Viewport.size = main_viewport_size
+	bg_node.rect_size = main_viewport_size
+	bg_node.rect_position = Vector2.ZERO
 	pass
 	#load_image("/mnt/warehouse/Pictures/Pixiv/100639347_p0.jpg")
 	#load_image("/mnt/warehouse/Pictures/Pixiv/64568561_p0.jpg")
@@ -74,7 +82,7 @@ func load_image(image_full_path:String):
 	return OK
 
 
-var dragging := false
+var dragging := false setget set_dragging
 var last_image_viewed_position:Vector2
 
 func _unhandled_input(event):
@@ -94,7 +102,7 @@ func _unhandled_input(event):
 		#dragging
 		elif event.button_index == 1:
 			last_image_viewed_position = node.rect_position
-			dragging = true
+			set_dragging(true)
 		
 		update_info()
 	
@@ -111,9 +119,17 @@ func _unhandled_input(event):
 
 func _input(event):
 	if dragging and event is InputEventMouseButton and event.button_index == 1 and !event.pressed:
-		dragging = false
+		set_dragging(false) 
 		
 		update_info()
+
+
+func set_dragging(new_dragging:bool):
+	dragging = new_dragging
+	if dragging:
+		image_list.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	else:
+		image_list.mouse_filter = Control.MOUSE_FILTER_STOP
 
 
 var target_size:Vector2
@@ -246,7 +262,7 @@ func take_snapshot(path:String) -> void:
 
 func set_background(color):
 	background = color
-	$BG.modulate = color
+	bg_node.modulate = color
 
 
 func convert_operation_meta(source_path:String,target_path:String,metadata:Array):
@@ -287,6 +303,8 @@ func convert_operation(source_path:String,target_path:String,
 	var dir = Directory.new()
 	dir.remove(working_filepath)
 
+
+### Control # ==================================================================
 
 func _on_TestMagick_pressed():
 	#crop
@@ -389,3 +407,6 @@ func _on_DefaultFit_pressed():
 
 func _on_Ignore_toggled(button_pressed):
 	ignored = button_pressed
+
+### ----------------------------------------------------------------------------
+

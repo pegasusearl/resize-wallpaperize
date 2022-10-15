@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://scripts/DrawGrid.gd" type="Script" id=1]
 [ext_resource path="res://scripts/ImageLoader.gd" type="Script" id=2]
@@ -6,14 +6,23 @@
 [ext_resource path="res://assets/layout.tres" type="Theme" id=4]
 [ext_resource path="res://assets/overlay_font.tres" type="DynamicFont" id=5]
 [ext_resource path="res://assets/floating_overlay.tres" type="Theme" id=6]
-[ext_resource path="res://icon.png" type="Texture" id=7]
+[ext_resource path="res://assets/tests/85672481_p0.webp" type="Texture" id=7]
 [ext_resource path="res://assets/85774890_p0_resized.jpg" type="Texture" id=8]
 [ext_resource path="res://scripts/ImageList.gd" type="Script" id=9]
+[ext_resource path="res://assets/SalmaPro-Medium.otf" type="DynamicFontData" id=10]
+[ext_resource path="res://assets/image_list_font.tres" type="StyleBox" id=11]
+[ext_resource path="res://assets/tests/83628836_p0.webp" type="Texture" id=12]
+[ext_resource path="res://assets/tests/89306550_p0.webp" type="Texture" id=13]
+[ext_resource path="res://assets/tests/88787164_p0.webp" type="Texture" id=14]
+[ext_resource path="res://assets/tests/90923816_p0.webp" type="Texture" id=15]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="ViewportTexture" id=7]
+viewport_path = NodePath("ImageViewer/Viewport")
 
 [sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.92549, 0.301961, 0.490196, 1 )
@@ -25,17 +34,9 @@ border_color = Color( 0.388235, 0.243137, 0.360784, 1 )
 
 [sub_resource type="StyleBoxEmpty" id=5]
 
-[sub_resource type="StyleBoxFlat" id=3]
-content_margin_left = 24.0
-content_margin_right = 24.0
-content_margin_top = 16.0
-content_margin_bottom = 16.0
-bg_color = Color( 0, 0, 0, 0.768627 )
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color( 0, 0, 0, 0.819608 )
+[sub_resource type="DynamicFont" id=8]
+size = 20
+font_data = ExtResource( 10 )
 
 [sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0, 0, 0, 0.733333 )
@@ -61,17 +62,26 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="BG" type="Panel" parent="ImageViewer"]
+[node name="Viewport" type="Viewport" parent="ImageViewer"]
+size = Vector2( 2, 2 )
+handle_input_locally = false
+render_target_v_flip = true
+render_target_update_mode = 3
+gui_disable_input = true
+
+[node name="BG" type="Panel" parent="ImageViewer/Viewport"]
 modulate = Color( 0, 0, 0, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = -1840.0
+margin_bottom = -1011.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 2 )
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="TextureRect" type="TextureRect" parent="ImageViewer"]
+[node name="TextureRect" type="TextureRect" parent="ImageViewer/Viewport"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -81,6 +91,12 @@ stretch_mode = 7
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="Viewer" type="TextureRect" parent="ImageViewer"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+mouse_filter = 2
+texture = SubResource( 7 )
 
 [node name="DrawGrid" type="Node2D" parent="ImageViewer"]
 visible = false
@@ -100,10 +116,12 @@ text = "ras"
 autowrap = true
 
 [node name="Actions" type="Label" parent="ImageViewer"]
+anchor_top = 1.0
+anchor_bottom = 1.0
 margin_left = 82.0
-margin_top = 445.0
+margin_top = -635.0
 margin_right = 1140.0
-margin_bottom = 913.0
+margin_bottom = -167.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 2
@@ -255,14 +273,20 @@ margin_bottom = 46.0
 text = "magick"
 
 [node name="ImageList" type="ItemList" parent="ImageViewer"]
-margin_left = 1552.0
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -512.0
 margin_top = 40.0
-margin_right = 1880.0
-margin_bottom = 728.0
-custom_constants/icon_margin = 17
-custom_styles/bg = SubResource( 3 )
-items = [ "0:", ExtResource( 7 ), false, "Item 1", ExtResource( 7 ), false, "Item 2", ExtResource( 8 ), false ]
-fixed_icon_size = Vector2( 64, 48 )
+margin_right = -40.0
+margin_bottom = -352.0
+custom_fonts/font = SubResource( 8 )
+custom_styles/bg = ExtResource( 11 )
+items = [ "0:", ExtResource( 12 ), false, "Item 1", ExtResource( 7 ), false, "Item 2", ExtResource( 14 ), false, "Item 3", ExtResource( 13 ), false, "Item 4", ExtResource( 15 ), false ]
+max_columns = 2
+fixed_column_width = 200
+icon_mode = 0
+fixed_icon_size = Vector2( 200, 200 )
 script = ExtResource( 9 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

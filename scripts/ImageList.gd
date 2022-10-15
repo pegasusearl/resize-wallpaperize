@@ -2,6 +2,7 @@ extends ItemList
 
 
 onready var image_viewer = get_node("..")
+onready var dir = Directory.new()
 var request_visibility := true setget set_request_visibility
 var hover_visibility := true setget set_hover_visibility
 
@@ -23,10 +24,16 @@ func refresh_visibility():
 		hide()
 
 
+var last_mouse_hovered := false
+
 func _input(event):
 	if event is InputEventMouseMotion:
 		var mouse_position = get_local_mouse_position()
-		set_hover_visibility(mouse_position.x > 0 and mouse_position.y < rect_size.y)
+		var now_mouse_hovered = mouse_position.x > 0 and mouse_position.y < rect_size.y
+		image_viewer.dragging
+		if now_mouse_hovered != last_mouse_hovered and not image_viewer.dragging:
+			set_hover_visibility(now_mouse_hovered)
+		last_mouse_hovered = now_mouse_hovered
 
 
 var item_list = []
@@ -48,11 +55,15 @@ sections:
 
 
 func _ready():
+	randomize()
 	if CurrentDirectory.target == "":
 		print("target directory is empty. do nothing.")
 		return
 	
-	var dir := Directory.new()
+	#var dir := Directory.new()
+	
+	#THUMBNAIL
+	dir.make_dir_recursive(thumbnail_directory)
 	
 	if not dir.dir_exists(CurrentDirectory.target):
 		dir.make_dir_recursive(CurrentDirectory.target)
@@ -62,7 +73,9 @@ func _ready():
 
 	item_list = get_file_list(CurrentDirectory.source)
 	item_list.sort()
+	thumbnail_queue = item_list.duplicate(true)
 	re_generate_image_list()
+	refresh_thumbnail()
 
 
 func re_generate_image_list():
@@ -77,7 +90,9 @@ func re_generate_image_list():
 
 
 func get_prefix(item_name:String):
-	if not config.has_section(item_name):
+#	if not config.has_section(item_name):
+#		return "_:"
+	if not config.has_section_key(item_name,"metadata"):
 		return "_:"
 	var ignored = config.get_value(item_name,"metadata")[9]
 	if ignored:
@@ -87,11 +102,13 @@ func get_prefix(item_name:String):
 
 
 func get_fg_color(item_name:String):
-	if not config.has_section(item_name):
+#	if not config.has_section(item_name):
+#		return Color.white
+	if not config.has_section_key(item_name,"metadata"):
 		return Color.white
 	var ignored = config.get_value(item_name,"metadata")[9]
 	if ignored:
-		return Color.red
+		return Color(0.3,0.3,0.3)
 	else:
 		return Color.green
 
@@ -142,3 +159,58 @@ func _on_Save_pressed():
 	set_item_text(item_index[current_image],get_prefix(current_image)+current_image)
 	set_item_custom_fg_color(item_index[current_image],get_fg_color(current_image))
 
+
+### Thumbnail Generator --------------------------------------------------------
+
+# generate thumbnail filename and target path in user://, check if there is any 
+# image that has not assigned thumbnail path and add it.
+# save them in Config.section
+# put all image in the queue
+# then generate thumbnail based on this queue in separate thread.
+# check if thumbnail already exist before actually generating it, incase it's
+# generated when saving config. Or it's already generated in previous run.
+
+var thumbnail_queue := []
+onready var thumbnail_directory := OS.get_user_data_dir()+"/thumbnail"
+
+# magick source.png -quality 92 -define webp:lossless=false -resize 200x200 -strip target.webp
+
+signal bot_thumbnail_finished
+
+
+var processing_thumbnail := false
+func refresh_thumbnail():
+	if processing_thumbnail or thumbnail_queue.size() == 0:
+		print("thumbnail operation stopped")
+		return
+	processing_thumbnail = true
+	var working_thumbnail:String = thumbnail_queue.pop_front()
+	var source_fullpath := CurrentDirectory.source+"/"+working_thumbnail
+	var thumbnail_name := str("/",randi(),"_",working_thumbnail,".webp")
+	
+	if config.has_section_key(working_thumbnail,"tb"):
+		thumbnail_name = config.get_value(working_thumbnail,"tb")
+	else:
+		config.set_value(working_thumbnail,"tb",thumbnail_name)
+		config.save(CurrentDirectory.config_path)
+	
+	var thumbnail_fullpath := thumbnail_directory+thumbnail_name
+	
+	if not dir.file_exists(thumbnail_fullpath):
+		var thumbnail_bot = Thread.new()
+		thumbnail_bot.start(self,"_thumbnail_operation",[source_fullpath,thumbnail_fullpath])
+		yield(self,"bot_thumbnail_finished")
+	
+	var new_icon := ImageTexture.new()
+	new_icon.load(thumbnail_fullpath)
+	set_item_icon(item_index[working_thumbnail],new_icon)
+	
+	processing_thumbnail = false
+	refresh_thumbnail()
+
+
+func _thumbnail_operation(input_data:Array):
+	image_viewer.run_command("magick",[input_data[0],"-quality","92","-define","webp:lossless=false","-resize","200x200","-strip",input_data[1]])
+	emit_signal("bot_thumbnail_finished")
+
+# ------------------------------------------------------------------------------
