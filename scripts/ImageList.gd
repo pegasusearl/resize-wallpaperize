@@ -24,10 +24,9 @@ func refresh_visibility():
 
 
 func _input(event):
-	print(get_local_mouse_position())
 	if event is InputEventMouseMotion:
 		var mouse_position = get_local_mouse_position()
-		set_hover_visibility(mouse_position.x < rect_size.x and mouse_position.x > 0)
+		set_hover_visibility(mouse_position.x > 0)
 
 
 var item_list = []
@@ -97,7 +96,7 @@ func get_fg_color(item_name:String):
 		return Color.green
 
 
-func get_file_list(path:String,filter_type:Array=["jpg","png"]) -> Array:
+func get_file_list(path:String,filter_type:Array=["jpg","png","jpeg"]) -> Array:
 	var file_list = []
 	var dir = Directory.new()
 	if dir.open(path) == OK:

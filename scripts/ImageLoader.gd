@@ -49,7 +49,7 @@ func load_image(image_full_path:String):
 	filetype = full_path.get_extension()
 	info += "Filetype: \t"+ filetype +"\n"
 	
-	if filetype == "jpg":
+	if ["jpg","jpeg"].has(filetype):
 		jpg_quality = int( run_command("identify",["-format",'%Q',full_path]) )
 		info += "JPG saved quality: \t"+ str(jpg_quality) +"\n"
 	

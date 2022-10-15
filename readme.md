@@ -8,3 +8,4 @@ todo:
 ~~remove "modified" flag each time operation is completed on an entry~~
 manually edit denoise value
 hide some more UI element
+
