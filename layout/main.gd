@@ -55,6 +55,8 @@ func start_convert_operation():
 	for section in image_list.config.get_sections():
 		if image_list.config.has_section_key(section,"converted"):
 			pass
+		elif not image_list.config.has_section_key(section,"metadata"):
+			pass
 		elif not image_list.config.get_value(section,"metadata")[9]:
 			unignored_list.append(section)
 	
