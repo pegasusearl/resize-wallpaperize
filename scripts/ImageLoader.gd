@@ -22,12 +22,9 @@ var aspect_ratio := 1.777777778
 
 #viewer
 var image_scale := 1.0
-var thumbnail_size:Vector2
 
 func _ready():
 	var main_viewport_size = get_viewport().size
-	thumbnail_size = Vector2(128, floor(128.0/main_viewport_size.x*main_viewport_size.y) )
-	image_list.fixed_icon_size = thumbnail_size
 	$Viewport.size = main_viewport_size
 	bg_node.rect_size = main_viewport_size
 	bg_node.rect_position = Vector2.ZERO

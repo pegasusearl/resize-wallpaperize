@@ -280,6 +280,7 @@ margin_left = -512.0
 margin_top = 40.0
 margin_right = -40.0
 margin_bottom = -352.0
+custom_constants/vseparation = 24
 custom_fonts/font = SubResource( 8 )
 custom_styles/bg = ExtResource( 11 )
 items = [ "0:", ExtResource( 12 ), false, "Item 1", ExtResource( 7 ), false, "Item 2", ExtResource( 14 ), false, "Item 3", ExtResource( 13 ), false, "Item 4", ExtResource( 15 ), false ]

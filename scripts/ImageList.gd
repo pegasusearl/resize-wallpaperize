@@ -76,6 +76,7 @@ func _ready():
 	thumbnail_queue = item_list.duplicate(true)
 	re_generate_image_list()
 	refresh_thumbnail()
+	fixed_icon_size.y = 200.0/get_viewport().size.x*get_viewport().size.y
 
 
 func re_generate_image_list():
@@ -178,6 +179,9 @@ onready var thumbnail_directory := OS.get_user_data_dir()+"/thumbnail"
 signal bot_thumbnail_finished
 
 
+var thumbnail_bot
+var thumbnail_assign
+
 var processing_thumbnail := false
 func refresh_thumbnail():
 	if processing_thumbnail or thumbnail_queue.size() == 0:
@@ -197,20 +201,29 @@ func refresh_thumbnail():
 	var thumbnail_fullpath := thumbnail_directory+thumbnail_name
 	
 	if not dir.file_exists(thumbnail_fullpath):
-		var thumbnail_bot = Thread.new()
-		thumbnail_bot.start(self,"_thumbnail_operation",[source_fullpath,thumbnail_fullpath])
+		thumbnail_bot = Thread.new()
+		thumbnail_bot.start(self,"_thumbnail_convert",[source_fullpath,thumbnail_fullpath])
 		yield(self,"bot_thumbnail_finished")
+		thumbnail_bot.wait_to_finish()
 	
-	var new_icon := ImageTexture.new()
-	new_icon.load(thumbnail_fullpath)
-	set_item_icon(item_index[working_thumbnail],new_icon)
+	thumbnail_assign = Thread.new()
+	thumbnail_assign.start(self,"_thumbnail_assign",[thumbnail_fullpath,working_thumbnail])
+	yield(self,"bot_thumbnail_finished")
+	thumbnail_assign.wait_to_finish()
 	
 	processing_thumbnail = false
 	refresh_thumbnail()
 
 
-func _thumbnail_operation(input_data:Array):
+func _thumbnail_convert(input_data:Array):
 	image_viewer.run_command("magick",[input_data[0],"-quality","92","-define","webp:lossless=false","-resize","200x200","-strip",input_data[1]])
+	emit_signal("bot_thumbnail_finished")
+
+
+func _thumbnail_assign(input_data:Array):
+	var new_icon := ImageTexture.new()
+	new_icon.load(input_data[0])
+	set_item_icon(item_index[input_data[1]],new_icon)
 	emit_signal("bot_thumbnail_finished")
 
 # ------------------------------------------------------------------------------
