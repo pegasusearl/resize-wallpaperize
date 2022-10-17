@@ -87,6 +87,7 @@ func re_generate_image_list():
 		item_index[item] = id
 		add_item(get_prefix(item)+item,null)
 		set_item_custom_fg_color(id,get_fg_color(item))
+		set_item_icon_modulate(id,get_icon_modulate(item))
 		id += 1
 
 
@@ -112,6 +113,16 @@ func get_fg_color(item_name:String):
 		return Color(0.3,0.3,0.3)
 	else:
 		return Color.green
+
+
+func get_icon_modulate(item_name:String):
+	if not config.has_section_key(item_name,"metadata"):
+		return Color.white
+	var ignored = config.get_value(item_name,"metadata")[9]
+	if ignored:
+		return Color(1,1,1,0.3)
+	else:
+		return Color.white
 
 
 func get_file_list(path:String,filter_type:Array=["jpg","png","jpeg"]) -> Array:
@@ -159,6 +170,7 @@ func _on_Save_pressed():
 	
 	set_item_text(item_index[current_image],get_prefix(current_image)+current_image)
 	set_item_custom_fg_color(item_index[current_image],get_fg_color(current_image))
+	set_item_icon_modulate(item_index[current_image],get_icon_modulate(current_image))
 
 
 ### Thumbnail Generator --------------------------------------------------------
@@ -206,10 +218,11 @@ func refresh_thumbnail():
 		yield(self,"bot_thumbnail_finished")
 		thumbnail_bot.wait_to_finish()
 	
-	thumbnail_assign = Thread.new()
-	thumbnail_assign.start(self,"_thumbnail_assign",[thumbnail_fullpath,working_thumbnail])
-	yield(self,"bot_thumbnail_finished")
-	thumbnail_assign.wait_to_finish()
+#	thumbnail_assign = Thread.new()
+#	thumbnail_assign.start(self,"_thumbnail_assign",[thumbnail_fullpath,working_thumbnail])
+#	yield(self,"bot_thumbnail_finished")
+#	thumbnail_assign.wait_to_finish()
+	_thumbnail_assign([thumbnail_fullpath,working_thumbnail]) #if not using thread
 	
 	processing_thumbnail = false
 	refresh_thumbnail()
