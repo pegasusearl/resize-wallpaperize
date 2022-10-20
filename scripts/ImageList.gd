@@ -62,10 +62,10 @@ func _ready():
 	
 	# apply project config
 	if config.has_section_key("@$project_data","resolution"):
-		get_viewport().size = config.get_value("@$project_data","resolution")
+		get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT,SceneTree.STRETCH_ASPECT_KEEP,config.get_value("@$project_data","resolution"))
 	else:
-		get_viewport().size = CurrentDirectory.new_resolution
-		config.set_value("@$project_data","resolution",get_viewport().size)
+		config.set_value("@$project_data","resolution",CurrentDirectory.new_resolution)
+		get_tree().set_screen_stretch(SceneTree.STRETCH_MODE_VIEWPORT,SceneTree.STRETCH_ASPECT_KEEP,config.get_value("@$project_data","resolution"))
 	if config.has_section_key("@$project_data","source_dir"):
 		CurrentDirectory.source = config.get_value("@$project_data","source_dir")
 	else:
@@ -84,7 +84,10 @@ func _ready():
 	item_list.sort()
 	re_generate_image_list()
 	prepare_thumbnail(item_list.duplicate(true))
-	fixed_icon_size.y = 200.0/get_viewport().size.x*get_viewport().size.y
+	if get_viewport().size.x > get_viewport().size.y:
+		fixed_icon_size.y = 200.0/get_viewport().size.x*get_viewport().size.y
+	else:
+		fixed_icon_size.x = 200.0/get_viewport().size.y*get_viewport().size.x
 
 
 func _exit_tree():
@@ -97,8 +100,8 @@ func re_generate_image_list():
 	clear()
 	for item in item_list:
 		item_index[item] = id
-		add_item(get_prefix(item)+item,null)
-		set_item_icon(id,proxy_thumbnail)
+		add_item(get_prefix(item)+item,proxy_thumbnail)
+		#set_item_icon(id,proxy_thumbnail)
 		set_item_custom_fg_color(id,get_fg_color(item))
 		set_item_icon_modulate(id,get_icon_modulate(item))
 		id += 1

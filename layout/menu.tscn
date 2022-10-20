@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/layout.tres" type="Theme" id=1]
 [ext_resource path="res://layout/menu.gd" type="Script" id=2]
-[ext_resource path="res://assets/SalmaPro-Medium.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://assets/big_font.tres" type="DynamicFont" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 32.0
@@ -21,10 +21,6 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="DynamicFont" id=2]
-size = 64
-font_data = ExtResource( 3 )
-
 [node name="Menu" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -42,38 +38,40 @@ margin_right = 1888.0
 margin_bottom = 1048.0
 custom_constants/separation = 14
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer3" type="GridContainer" parent="VBoxContainer"]
 margin_right = 1856.0
-margin_bottom = 998.0
+margin_bottom = 1016.0
 size_flags_vertical = 3
+columns = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 926.0
-margin_bottom = 998.0
+margin_bottom = 1016.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer"]
 margin_left = 32.0
 margin_top = 32.0
 margin_right = 894.0
-margin_bottom = 966.0
+margin_bottom = 984.0
 custom_constants/separation = 42
 alignment = 1
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_top = 190.0
+margin_top = 199.0
 margin_right = 862.0
-margin_bottom = 264.0
-custom_fonts/font = SubResource( 2 )
+margin_bottom = 273.0
+custom_fonts/font = ExtResource( 3 )
 text = "New Project"
 align = 1
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
 margin_left = 325.0
-margin_top = 306.0
+margin_top = 315.0
 margin_right = 537.0
-margin_bottom = 406.0
+margin_bottom = 415.0
 size_flags_horizontal = 4
 columns = 2
 
@@ -107,9 +105,9 @@ text = "2340"
 placeholder_text = "1080"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_top = 448.0
+margin_top = 457.0
 margin_right = 862.0
-margin_bottom = 496.0
+margin_bottom = 505.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer"]
 margin_top = 5.0
@@ -131,9 +129,9 @@ margin_bottom = 48.0
 text = "Browse"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_top = 538.0
+margin_top = 547.0
 margin_right = 862.0
-margin_bottom = 658.0
+margin_bottom = 667.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 128.0
@@ -157,20 +155,58 @@ text = "Browse"
 
 [node name="CreateNew" type="Button" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
 margin_left = 383.0
-margin_top = 700.0
+margin_top = 709.0
 margin_right = 479.0
-margin_bottom = 744.0
+margin_bottom = 753.0
 size_flags_horizontal = 4
 text = "Start!"
 
 [node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 930.0
 margin_right = 1856.0
-margin_bottom = 998.0
+margin_bottom = 1016.0
 size_flags_horizontal = 3
 custom_styles/panel = SubResource( 1 )
 
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer2"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 894.0
+margin_bottom = 984.0
+custom_constants/separation = 42
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
+margin_right = 862.0
+margin_bottom = 74.0
+custom_fonts/font = ExtResource( 3 )
+text = "Open Project"
+align = 1
+
+[node name="Open" type="Button" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
+margin_top = 116.0
+margin_right = 862.0
+margin_bottom = 160.0
+text = "Open"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
+margin_top = 202.0
+margin_right = 862.0
+margin_bottom = 206.0
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
+margin_top = 248.0
+margin_right = 862.0
+margin_bottom = 286.0
+text = "Recent:"
+
+[node name="RecentProjectList" type="ItemList" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
+margin_top = 328.0
+margin_right = 862.0
+margin_bottom = 952.0
+size_flags_vertical = 3
+
 [node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+visible = false
 margin_top = 1012.0
 margin_right = 1856.0
 margin_bottom = 1016.0
@@ -184,9 +220,9 @@ text = "Source Directory"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
 visible = false
-margin_top = 676.0
+margin_top = 968.0
 margin_right = 1856.0
-margin_bottom = 724.0
+margin_bottom = 1016.0
 
 [node name="SourceDir" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
 margin_right = 1725.0
@@ -299,16 +335,12 @@ window_title = "Error."
 dialog_text = "ast arstars tarst r arst rst arst ast"
 dialog_autowrap = true
 
-[node name="Cover" type="PanelContainer" parent="."]
-visible = false
-margin_left = 32.0
-margin_top = 32.0
-margin_right = 1888.0
-margin_bottom = 1048.0
-
 [connection signal="pressed" from="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer/Browse" to="Popup/NewProject" method="popup_centered"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2/BrowseSource" to="Popup/SourceDir" method="popup_centered"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/CreateNew" to="." method="_on_CreateNew_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer/Open" to="Popup/OpenProject" method="popup_centered"]
+[connection signal="item_activated" from="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer/RecentProjectList" to="." method="_on_RecentProjectList_item_activated"]
 [connection signal="pressed" from="VBoxContainer/Go" to="." method="_on_Go_pressed"]
 [connection signal="dir_selected" from="Popup/NewProject" to="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer/NewPath" method="set_text"]
+[connection signal="file_selected" from="Popup/OpenProject" to="." method="_on_OpenProject_file_selected"]
 [connection signal="dir_selected" from="Popup/SourceDir" to="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2/SourcePath" method="set_text"]

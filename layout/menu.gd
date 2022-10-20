@@ -5,9 +5,36 @@ onready var new_width = $VBoxContainer/HBoxContainer3/PanelContainer/VBoxContain
 onready var new_height = $VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer/Height
 onready var new_path = $VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer/NewPath
 onready var new_source_path = $VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2/SourcePath
-onready var cover = $Cover
 
 onready var error_node = $Popup/Error
+onready var recent_project_node = $VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer/RecentProjectList
+onready var settings = ConfigFile.new()
+
+#file manager
+onready var new_project_fm = $Popup/NewProject
+onready var open_project_fm = $Popup/OpenProject
+onready var source_dir_fm = $Popup/SourceDir
+
+func _ready():
+	settings.load("user://settings.cfg")
+	
+	if settings.has_section_key("history","new_project_dir"):
+		new_project_fm.current_dir = settings.get_value("history","new_project_dir")
+	if settings.has_section_key("history","open_project_dir"):
+		open_project_fm.current_dir = settings.get_value("history","new_project_dir")
+	if settings.has_section_key("history","source_dir"):
+		source_dir_fm.current_dir = settings.get_value("history","new_project_dir")
+	
+	if settings.has_section_key("history","list"):
+		for entry in settings.get_value("history","list"):
+			recent_project_node.add_item(entry)
+
+
+func _exit_tree():
+	settings.set_value("history","new_project_dir",new_project_fm.current_dir)
+	settings.set_value("history","open_project_dir",open_project_fm.current_dir)
+	settings.set_value("history","source_dir",source_dir_fm.current_dir)
+	settings.save("user://settings.cfg")
 
 
 func _on_Go_pressed():
@@ -98,11 +125,25 @@ func open_project(target:String,source:String,resolution:Vector2):
 	CurrentDirectory.target = target
 	CurrentDirectory.new_resolution = resolution
 	CurrentDirectory.source = source
-	#cover.show()
-	get_viewport().size = resolution
-	yield(get_tree(),"idle_frame")
-	yield(get_tree(),"idle_frame")
-	yield(get_tree(),"idle_frame")
-	#OS.window_size = resolution
-	return
+	var new_history = settings.get_value("history","list",[])
+	new_history.push_front(target)
+	settings.set_value("history","list",new_history)
 	get_tree().change_scene("res://layout/main.tscn")
+
+
+func _on_OpenProject_dir_selected(dir):
+	dir = dir.rstrip("/")
+	CurrentDirectory.target = dir
+	var new_history:Array = settings.get_value("history","list",[])
+	new_history.erase(dir)
+	new_history.push_front(dir)
+	settings.set_value("history","list",new_history)
+	get_tree().change_scene("res://layout/main.tscn")
+
+
+func _on_OpenProject_file_selected(path):
+	_on_OpenProject_dir_selected(path.rstrip("wallpaperize.cfg"))
+
+
+func _on_RecentProjectList_item_activated(index):
+	_on_OpenProject_dir_selected(recent_project_node.get_item_text(index))
