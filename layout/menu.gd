@@ -18,16 +18,22 @@ onready var source_dir_fm = $Popup/SourceDir
 func _ready():
 	settings.load("user://settings.cfg")
 	
-	if settings.has_section_key("history","new_project_dir"):
-		new_project_fm.current_dir = settings.get_value("history","new_project_dir")
-	if settings.has_section_key("history","open_project_dir"):
-		open_project_fm.current_dir = settings.get_value("history","new_project_dir")
-	if settings.has_section_key("history","source_dir"):
-		source_dir_fm.current_dir = settings.get_value("history","new_project_dir")
+	var pictures_dir:String = OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
+	
+	initialize_folder_dialog(new_project_fm,"new_project_dir",pictures_dir)
+	initialize_folder_dialog(open_project_fm,"open_project_dir",pictures_dir)
+	initialize_folder_dialog(source_dir_fm,"source_dir",pictures_dir)
 	
 	if settings.has_section_key("history","list"):
 		for entry in settings.get_value("history","list"):
 			recent_project_node.add_item(entry)
+
+
+func initialize_folder_dialog(folder_dialog:FileDialog,save_name:String,fallback_dir:String):
+	if settings.has_section_key("history",save_name):
+		folder_dialog.current_dir = settings.get_value("history",save_name)
+	else:
+		folder_dialog.current_dir = fallback_dir
 
 
 func _exit_tree():
@@ -113,7 +119,9 @@ func _on_CreateNew_pressed():
 		resolution.y = int(new_height.text)
 	
 	if errors.size() > 0:
-		error_node.dialog_text = str(errors)
+		error_node.dialog_text = ""
+		for error_message in errors:
+			error_node.dialog_text += error_message+"\n"
 		error_node.popup_centered()
 		return
 	

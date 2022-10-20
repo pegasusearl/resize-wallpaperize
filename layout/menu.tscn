@@ -85,7 +85,6 @@ text = "Width"
 margin_left = 106.0
 margin_right = 212.0
 margin_bottom = 48.0
-text = "1080"
 placeholder_text = "1920"
 
 [node name="label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer"]
@@ -101,7 +100,6 @@ margin_left = 106.0
 margin_top = 52.0
 margin_right = 212.0
 margin_bottom = 100.0
-text = "2340"
 placeholder_text = "1080"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
@@ -120,7 +118,6 @@ margin_left = 74.0
 margin_right = 731.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
-text = "/mnt/warehouse/Pictures/Wallpaper/Pixiv-nova5t"
 
 [node name="Browse" type="Button" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer"]
 margin_left = 735.0
@@ -145,7 +142,6 @@ margin_left = 132.0
 margin_right = 731.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
-text = "/mnt/warehouse/Pictures/Pixiv"
 
 [node name="BrowseSource" type="Button" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 735.0

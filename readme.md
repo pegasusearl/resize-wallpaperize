@@ -11,16 +11,5 @@ hide some more UI element
 
 
 
-W 0:00:02.396   ~Thread: A Thread object has been destroyed without wait_to_finish() having been called on it. Please do so to ensure correct cleanup of the thread.
+when denoise value is set by jpg. the next png files will follow
 
-
-
-hmm alright, but what does it do exactly? If I put wait to finish I will have to wait and freeze until the thread is finished, doesn't that mean it's pointless to have separate thread in the first place?
-
-
-
-E 0:00:02.397   wait_to_finish: A Thread can't wait for itself to finish.
-
-
-
-Huh, but you are the one who told me to do it!! I follow the example on wiki. What seems to be the problem here?
