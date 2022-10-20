@@ -4,6 +4,8 @@ extends Node
 var target:String setget set_target
 var source:String
 
+var new_resolution:Vector2 = Vector2(1920,1080)
+
 var config_path:String
 
 

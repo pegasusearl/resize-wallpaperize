@@ -3,6 +3,7 @@ extends ItemList
 
 onready var image_viewer = get_node("..")
 onready var dir = Directory.new()
+export var proxy_thumbnail:Texture
 var request_visibility := true setget set_request_visibility
 var hover_visibility := true setget set_hover_visibility
 
@@ -56,27 +57,38 @@ sections:
 
 func _ready():
 	randomize()
+	config = ConfigFile.new()
+	config.load(CurrentDirectory.config_path)
+	
+	# apply project config
+	if config.has_section_key("@$project_data","resolution"):
+		get_viewport().size = config.get_value("@$project_data","resolution")
+	else:
+		get_viewport().size = CurrentDirectory.new_resolution
+		config.set_value("@$project_data","resolution",get_viewport().size)
+	if config.has_section_key("@$project_data","source_dir"):
+		CurrentDirectory.source = config.get_value("@$project_data","source_dir")
+	else:
+		config.set_value("@$project_data","source_dir",CurrentDirectory.source)
+	
 	if CurrentDirectory.target == "":
 		print("target directory is empty. do nothing.")
 		return
 	
 	#var dir := Directory.new()
 	
-	#THUMBNAIL
-	dir.make_dir_recursive(thumbnail_directory)
-	
 	if not dir.dir_exists(CurrentDirectory.target):
 		dir.make_dir_recursive(CurrentDirectory.target)
-	
-	config = ConfigFile.new()
-	config.load(CurrentDirectory.config_path)
 
 	item_list = get_file_list(CurrentDirectory.source)
 	item_list.sort()
-	thumbnail_queue = item_list.duplicate(true)
 	re_generate_image_list()
-	refresh_thumbnail()
+	prepare_thumbnail(item_list.duplicate(true))
 	fixed_icon_size.y = 200.0/get_viewport().size.x*get_viewport().size.y
+
+
+func _exit_tree():
+	config.save(CurrentDirectory.config_path)
 
 
 func re_generate_image_list():
@@ -86,6 +98,7 @@ func re_generate_image_list():
 	for item in item_list:
 		item_index[item] = id
 		add_item(get_prefix(item)+item,null)
+		set_item_icon(id,proxy_thumbnail)
 		set_item_custom_fg_color(id,get_fg_color(item))
 		set_item_icon_modulate(id,get_icon_modulate(item))
 		id += 1
@@ -173,70 +186,56 @@ func _on_Save_pressed():
 	set_item_icon_modulate(item_index[current_image],get_icon_modulate(current_image))
 
 
-### Thumbnail Generator --------------------------------------------------------
+### Thumbnail Assigner --------------------------------------------------------
 
-# generate thumbnail filename and target path in user://, check if there is any 
-# image that has not assigned thumbnail path and add it.
-# save them in Config.section
-# put all image in the queue
-# then generate thumbnail based on this queue in separate thread.
-# check if thumbnail already exist before actually generating it, incase it's
-# generated when saving config. Or it's already generated in previous run.
+## CONFIG
+const USE_THREAD := true
 
-var thumbnail_queue := []
+
 onready var thumbnail_directory := OS.get_user_data_dir()+"/thumbnail"
 
 # magick source.png -quality 92 -define webp:lossless=false -resize 200x200 -strip target.webp
 
-signal bot_thumbnail_finished
-
-
-var thumbnail_bot
 var thumbnail_assign
 
-var processing_thumbnail := false
-func refresh_thumbnail():
-	if processing_thumbnail or thumbnail_queue.size() == 0:
-		print("thumbnail operation stopped")
+func prepare_thumbnail(thumbnail_list:Array):
+	Thumbnailer.connect("thumbnail_ready",self,"_on_thumbnail_ready")
+	Thumbnailer.request_thumbnails(thumbnail_list)
+
+
+func _on_thumbnail_ready(current_path,thumbnail_path):
+	if not USE_THREAD:
+		var new_icon := ImageTexture.new()
+		new_icon.load(thumbnail_directory+"/"+thumbnail_path)
+		set_item_icon(item_index[current_path],new_icon)
 		return
-	processing_thumbnail = true
-	var working_thumbnail:String = thumbnail_queue.pop_front()
-	var source_fullpath := CurrentDirectory.source+"/"+working_thumbnail
-	var thumbnail_name := str("/",randi(),"_",working_thumbnail,".webp")
-	
-	if config.has_section_key(working_thumbnail,"tb"):
-		thumbnail_name = config.get_value(working_thumbnail,"tb")
-	else:
-		config.set_value(working_thumbnail,"tb",thumbnail_name)
-		config.save(CurrentDirectory.config_path)
-	
-	var thumbnail_fullpath := thumbnail_directory+thumbnail_name
-	
-	if not dir.file_exists(thumbnail_fullpath):
-		thumbnail_bot = Thread.new()
-		thumbnail_bot.start(self,"_thumbnail_convert",[source_fullpath,thumbnail_fullpath])
-		yield(self,"bot_thumbnail_finished")
-		thumbnail_bot.wait_to_finish()
-	
-#	thumbnail_assign = Thread.new()
-#	thumbnail_assign.start(self,"_thumbnail_assign",[thumbnail_fullpath,working_thumbnail])
-#	yield(self,"bot_thumbnail_finished")
-#	thumbnail_assign.wait_to_finish()
-	_thumbnail_assign([thumbnail_fullpath,working_thumbnail]) #if not using thread
-	
-	processing_thumbnail = false
-	refresh_thumbnail()
+	#else:
+	queue_thumbnail_to_assign.append([thumbnail_directory+"/"+thumbnail_path,current_path])
+	if not assigning_thumbnail:
+		assign_thumbnail()
 
 
-func _thumbnail_convert(input_data:Array):
-	image_viewer.run_command("magick",[input_data[0],"-quality","92","-define","webp:lossless=false","-resize","200x200","-strip",input_data[1]])
-	emit_signal("bot_thumbnail_finished")
+var queue_thumbnail_to_assign:Array = []
+
+var assigning_thumbnail := false
+func assign_thumbnail():
+	if queue_thumbnail_to_assign.size() == 0:
+		return
+	assigning_thumbnail = true
+	thumbnail_assign = Thread.new()
+	thumbnail_assign.start(self,"_thumbnail_assign",queue_thumbnail_to_assign.pop_front())
+	yield(self,"thumbnail_assigner_finished")
+	yield(get_tree(),"idle_frame") # trying to prevent crash when first time generating thumbnail
+	thumbnail_assign.wait_to_finish()
+	assigning_thumbnail = false
+	call_deferred("assign_thumbnail")
 
 
+signal thumbnail_assigner_finished
 func _thumbnail_assign(input_data:Array):
 	var new_icon := ImageTexture.new()
 	new_icon.load(input_data[0])
 	set_item_icon(item_index[input_data[1]],new_icon)
-	emit_signal("bot_thumbnail_finished")
+	emit_signal("thumbnail_assigner_finished")
 
 # ------------------------------------------------------------------------------

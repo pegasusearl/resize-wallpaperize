@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scripts/DrawGrid.gd" type="Script" id=1]
 [ext_resource path="res://scripts/ImageLoader.gd" type="Script" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://assets/tests/89306550_p0.webp" type="Texture" id=13]
 [ext_resource path="res://assets/tests/88787164_p0.webp" type="Texture" id=14]
 [ext_resource path="res://assets/tests/90923816_p0.webp" type="Texture" id=15]
+[ext_resource path="res://assets/time.png" type="Texture" id=16]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -289,6 +290,7 @@ fixed_column_width = 200
 icon_mode = 0
 fixed_icon_size = Vector2( 200, 200 )
 script = ExtResource( 9 )
+proxy_thumbnail = ExtResource( 16 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2

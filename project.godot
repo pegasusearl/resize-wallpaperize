@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 CurrentDirectory="*res://singleton/CurrentDirectory.gd"
+Thumbnailer="*res://singleton/Thumbnailer.gd"
 
 [display]
 
