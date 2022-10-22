@@ -69,7 +69,7 @@ func process_thumbnail() -> void:
 	var thumbnail_bot = Thread.new()
 	thumbnail_bot.start(self,"_thumbnail_convert",[current_fullpath,thumbnail_path])
 	yield(self,"bot_thumbnail_finished")
-	yield(get_tree(),"idle_frame") # trying to prevent crash when first time generating thumbnail. not sure if it worked
+	yield(get_tree().create_timer(0.1),"timeout") # trying to prevent crash when first time generating thumbnail. not sure if it worked
 	thumbnail_bot.wait_to_finish()
 	
 	thumbnail_db.set_value("thumb",current_fullpath,thumbnail_name)

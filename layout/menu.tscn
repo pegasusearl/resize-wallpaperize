@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/layout.tres" type="Theme" id=1]
 [ext_resource path="res://layout/menu.gd" type="Script" id=2]
 [ext_resource path="res://assets/big_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/settings.png" type="Texture" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 32.0
@@ -38,7 +39,19 @@ margin_right = 1888.0
 margin_bottom = 1048.0
 custom_constants/separation = 14
 
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1856.0
+margin_bottom = 54.0
+alignment = 2
+
+[node name="Settings" type="Button" parent="VBoxContainer/HBoxContainer4"]
+margin_left = 1796.0
+margin_right = 1856.0
+margin_bottom = 54.0
+icon = ExtResource( 4 )
+
 [node name="HBoxContainer3" type="GridContainer" parent="VBoxContainer"]
+margin_top = 68.0
 margin_right = 1856.0
 margin_bottom = 1016.0
 size_flags_vertical = 3
@@ -46,7 +59,7 @@ columns = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 926.0
-margin_bottom = 1016.0
+margin_bottom = 948.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
@@ -55,23 +68,23 @@ custom_styles/panel = SubResource( 1 )
 margin_left = 32.0
 margin_top = 32.0
 margin_right = 894.0
-margin_bottom = 984.0
+margin_bottom = 916.0
 custom_constants/separation = 42
 alignment = 1
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_top = 199.0
+margin_top = 165.0
 margin_right = 862.0
-margin_bottom = 273.0
+margin_bottom = 239.0
 custom_fonts/font = ExtResource( 3 )
 text = "New Project"
 align = 1
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
 margin_left = 325.0
-margin_top = 315.0
+margin_top = 281.0
 margin_right = 537.0
-margin_bottom = 415.0
+margin_bottom = 381.0
 size_flags_horizontal = 4
 columns = 2
 
@@ -103,9 +116,9 @@ margin_bottom = 100.0
 placeholder_text = "1080"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_top = 457.0
+margin_top = 423.0
 margin_right = 862.0
-margin_bottom = 505.0
+margin_bottom = 471.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer"]
 margin_top = 5.0
@@ -126,9 +139,9 @@ margin_bottom = 48.0
 text = "Browse"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_top = 547.0
+margin_top = 513.0
 margin_right = 862.0
-margin_bottom = 667.0
+margin_bottom = 633.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 128.0
@@ -151,16 +164,16 @@ text = "Browse"
 
 [node name="CreateNew" type="Button" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
 margin_left = 383.0
-margin_top = 709.0
+margin_top = 675.0
 margin_right = 479.0
-margin_bottom = 753.0
+margin_bottom = 719.0
 size_flags_horizontal = 4
 text = "Start!"
 
 [node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 930.0
 margin_right = 1856.0
-margin_bottom = 1016.0
+margin_bottom = 948.0
 size_flags_horizontal = 3
 custom_styles/panel = SubResource( 1 )
 
@@ -168,7 +181,7 @@ custom_styles/panel = SubResource( 1 )
 margin_left = 32.0
 margin_top = 32.0
 margin_right = 894.0
-margin_bottom = 984.0
+margin_bottom = 916.0
 custom_constants/separation = 42
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
@@ -198,7 +211,7 @@ text = "Recent:"
 [node name="RecentProjectList" type="ItemList" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
 margin_top = 328.0
 margin_right = 862.0
-margin_bottom = 952.0
+margin_bottom = 884.0
 size_flags_vertical = 3
 
 [node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
