@@ -45,7 +45,7 @@ func start_convert_operation():
 	if operation_in_progress:
 		return
 	
-	var image_list = $ImageViewer/ImageList
+	var image_list = $ImageViewer/NewImageList
 	var image_viewer = $ImageViewer
 	var progress_bar = $Operation/VBoxContainer/ProgressBar
 	var operation_node = $Operation

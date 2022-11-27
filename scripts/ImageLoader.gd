@@ -5,7 +5,7 @@ onready var node = $Viewport/TextureRect
 onready var bg_node = $Viewport/BG
 onready var info_node = $Label
 onready var action_info_node = $Actions
-onready var image_list = $ImageList
+onready var image_list = $NewImageList
 
 onready var ignore_button = $Panel/Ignore
 onready var clear_button = $Panel/Clear
@@ -251,7 +251,7 @@ func run_command(command:String,arguments:Array=[]) -> String:
 func show_hud(show_them:bool):
 	info_node.visible = show_them
 	action_info_node.visible = show_them
-	image_list.request_visibility = show_them
+	image_list.shift_visibility = show_them
 	controller_panel.visible = show_them
 
 

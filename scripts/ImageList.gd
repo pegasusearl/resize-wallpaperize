@@ -56,6 +56,7 @@ sections:
 
 
 func _ready():
+	return #DISABLER
 	randomize()
 	config = ConfigFile.new()
 	config.load(CurrentDirectory.config_path)
@@ -177,6 +178,7 @@ func _on_ImageList_item_selected(index):
 
 
 func _on_Save_pressed():
+	return #DISABLER
 	if current_image == "":
 		return
 	config.set_value(current_image,"metadata",image_viewer.get_metadata())
