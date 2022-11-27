@@ -53,11 +53,17 @@ func load_image(image_full_path:String):
 	filetype = full_path.get_extension()
 	info += "Filetype: \t"+ filetype +"\n"
 	
+	var is_png := false
 	if ["jpg","jpeg"].has(filetype):
 		jpg_quality = int( run_command("identify",["-format",'%Q',full_path]) )
 		info += "JPG saved quality: \t"+ str(jpg_quality) +"\n"
+	else:
+		is_png = true
+		jpg_quality = 100
 	
-	if jpg_quality > 92:
+	if is_png:
+		denoise = 0
+	elif jpg_quality > 92:
 		denoise = 0
 	elif jpg_quality > 82:
 		denoise = 1
