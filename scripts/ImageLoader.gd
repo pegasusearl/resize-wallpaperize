@@ -12,6 +12,7 @@ onready var clear_button = $Panel/Clear
 onready var controller_panel = $Panel
 onready var grid_node = $DrawGrid
 onready var background_picker = $Panel/BackgroundPicker
+onready var denoise_button = $Panel/Denoise/Value
 
 #filetype
 var full_path := ""
@@ -224,6 +225,7 @@ func update_info():
 	info_text += "Upscale: "+str("x",upscale)+"\n"
 	
 	info_text += "Denoise: "+str(denoise,"/3")+"\n"
+	denoise_button.select(denoise)
 	
 	## resize
 	
@@ -292,7 +294,7 @@ func convert_operation(source_path:String,target_path:String,
 	#upscale
 	run_command("waifu2x-ncnn-vulkan",
 			["-i",working_filepath,"-o",
-			working_filepath,"-s",str(upscale),"-n=",str(denoise)])
+			working_filepath,"-s",str(upscale),"-n",str(denoise)])
 	#extent
 	var upscaled_size = mini_target_size*upscale
 	run_command("convert",[working_filepath,
@@ -411,5 +413,12 @@ func _on_DefaultFit_pressed():
 func _on_Ignore_toggled(button_pressed):
 	ignored = button_pressed
 
+
+# Denoise button
+func _on_Value_item_selected(index):
+	denoise = index
+	update_info()
+
 ### ----------------------------------------------------------------------------
+
 

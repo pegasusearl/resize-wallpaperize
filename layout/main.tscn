@@ -255,6 +255,30 @@ margin_right = -170.0
 margin_bottom = 206.0
 text = "CONVERT!"
 
+[node name="Denoise" type="HBoxContainer" parent="ImageViewer/Panel"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -952.0
+margin_top = -46.0
+margin_right = -711.0
+
+[node name="Label2" type="Label" parent="ImageViewer/Panel/Denoise"]
+margin_top = 4.0
+margin_right = 134.0
+margin_bottom = 42.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "Denoise:"
+
+[node name="Value" type="OptionButton" parent="ImageViewer/Panel/Denoise"]
+margin_left = 138.0
+margin_right = 241.0
+margin_bottom = 46.0
+text = "None"
+items = [ "None", null, false, 0, null, "x1", null, false, 1, null, "x2", null, false, 2, null, "x3", null, false, 3, null ]
+selected = 0
+
 [node name="HBoxContainer" type="GridContainer" parent="ImageViewer"]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -378,6 +402,7 @@ margin_bottom = 580.0
 [connection signal="pressed" from="ImageViewer/Panel/Save" to="ImageViewer/NewImageList" method="_on_Save_pressed"]
 [connection signal="toggled" from="ImageViewer/Panel/Grid" to="ImageViewer/DrawGrid" method="_on_Grid_toggled"]
 [connection signal="pressed" from="ImageViewer/Panel/Convert" to="." method="_on_Convert_pressed"]
+[connection signal="item_selected" from="ImageViewer/Panel/Denoise/Value" to="ImageViewer" method="_on_Value_item_selected"]
 [connection signal="pressed" from="ImageViewer/HBoxContainer/TestMagick" to="ImageViewer" method="_on_TestMagick_pressed"]
 [connection signal="text_entered" from="ImageViewer/NewImageList/LineEdit" to="ImageViewer/NewImageList" method="_on_LineEdit_text_entered"]
 [connection signal="pressed" from="ImageViewer/NewImageList/Categories/All" to="ImageViewer/NewImageList" method="_on_categories_selected" binds= [ 0 ]]

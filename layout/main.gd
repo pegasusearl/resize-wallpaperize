@@ -39,6 +39,28 @@ func reassing_denoise_level_delete_later():
 	print(err,"config saved")
 
 
+
+# TODO: delete too:
+func reconvert_image_with_denoise_parameters():
+	var no_reprocess := 0
+	var reprocess := 0
+	var image_list = $ImageViewer/NewImageList
+	var image_viewer = $ImageViewer
+	for section in image_list.config.get_sections():
+		var configuration = image_list.config.get_value(section,"metadata")
+		if configuration == null:
+			print("Configuration is null for ",section)
+			continue
+		if configuration[4] > 0:
+			reprocess += 1
+			if image_list.config.has_section_key(section,"converted"):
+				image_list.config.erase_section_key(section,"converted")
+		else:
+			no_reprocess += 1
+	var err = image_list.config.save(CurrentDirectory.config_path)
+	print("to process:",reprocess,"/",reprocess+no_reprocess)
+
+
 var operation_in_progress := false
 func start_convert_operation():
 	
