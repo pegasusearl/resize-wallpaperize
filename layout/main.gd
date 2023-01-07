@@ -8,6 +8,7 @@ func _process(delta):
 
 func _ready():
 	yield(get_tree(),"idle_frame")
+	#reconvert_image_with_denoise_parameters()
 	return
 
 
