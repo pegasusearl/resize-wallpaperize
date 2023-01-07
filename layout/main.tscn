@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scripts/DrawGrid.gd" type="Script" id=1]
 [ext_resource path="res://scripts/ImageLoader.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/floating_overlay.tres" type="Theme" id=6]
 [ext_resource path="res://assets/tests/85672481_p0.webp" type="Texture" id=7]
 [ext_resource path="res://assets/85774890_p0_resized.jpg" type="Texture" id=8]
+[ext_resource path="res://assets/selection.svg" type="Texture" id=9]
 [ext_resource path="res://assets/tests/83628836_p0.webp" type="Texture" id=12]
 [ext_resource path="res://assets/tests/89306550_p0.webp" type="Texture" id=13]
 [ext_resource path="res://assets/tests/88787164_p0.webp" type="Texture" id=14]
@@ -33,6 +34,15 @@ border_width_bottom = 4
 border_color = Color( 0.388235, 0.243137, 0.360784, 1 )
 
 [sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="StyleBoxTexture" id=11]
+content_margin_top = 8.0
+texture = ExtResource( 9 )
+region_rect = Rect2( 0, 0, 32, 56 )
+margin_left = 8.0
+margin_right = 8.0
+margin_top = 8.0
+margin_bottom = 32.0
 
 [sub_resource type="StyleBoxFlat" id=9]
 content_margin_left = 12.0
@@ -356,7 +366,10 @@ margin_top = 102.0
 margin_right = 472.0
 margin_bottom = 760.0
 size_flags_vertical = 3
+custom_colors/font_color_selected = Color( 0.129412, 0.0941176, 0.0941176, 1 )
 custom_constants/vseparation = 24
+custom_constants/icon_margin = 12
+custom_styles/selected_focus = SubResource( 11 )
 custom_styles/bg = SubResource( 9 )
 items = [ "Item 0", ExtResource( 12 ), false, "Item 1", ExtResource( 7 ), false, "Item 2", ExtResource( 14 ), false, "Item 3", ExtResource( 13 ), false, "Item 4", ExtResource( 15 ), false, "Item 5", ExtResource( 8 ), false ]
 max_columns = 2
