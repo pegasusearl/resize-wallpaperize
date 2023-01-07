@@ -26,12 +26,9 @@ var image_scale := 1.0
 
 func _ready():
 	var main_viewport_size = get_viewport().size
-	#$Viewport.size = main_viewport_size
+	print(main_viewport_size)
 	bg_node.rect_size = main_viewport_size
 	bg_node.rect_position = Vector2.ZERO
-	pass
-	#load_image("/mnt/warehouse/Pictures/Pixiv/100639347_p0.jpg")
-	#load_image("/mnt/warehouse/Pictures/Pixiv/64568561_p0.jpg")
 
 
 func load_image(image_full_path:String):

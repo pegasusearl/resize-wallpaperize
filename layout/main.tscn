@@ -70,16 +70,20 @@ __meta__ = {
 }
 
 [node name="Viewport" type="Control" parent="ImageViewer"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
 
 [node name="BG" type="Panel" parent="ImageViewer/Viewport"]
 modulate = Color( 0, 0, 0, 1 )
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 2 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="TextureRect" type="TextureRect" parent="ImageViewer/Viewport"]
 margin_right = 1920.0
@@ -88,9 +92,6 @@ mouse_filter = 2
 texture = ExtResource( 8 )
 expand = true
 stretch_mode = 7
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="DrawGrid" type="Node2D" parent="ImageViewer"]
 visible = false
