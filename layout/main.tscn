@@ -370,6 +370,7 @@ custom_colors/font_color_selected = Color( 0.129412, 0.0941176, 0.0941176, 1 )
 custom_constants/vseparation = 24
 custom_constants/icon_margin = 12
 custom_styles/selected_focus = SubResource( 11 )
+custom_styles/selected = SubResource( 11 )
 custom_styles/bg = SubResource( 9 )
 items = [ "Item 0", ExtResource( 12 ), false, "Item 1", ExtResource( 7 ), false, "Item 2", ExtResource( 14 ), false, "Item 3", ExtResource( 13 ), false, "Item 4", ExtResource( 15 ), false, "Item 5", ExtResource( 8 ), false ]
 max_columns = 2
