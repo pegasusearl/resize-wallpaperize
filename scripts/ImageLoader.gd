@@ -26,7 +26,7 @@ var image_scale := 1.0
 
 func _ready():
 	var main_viewport_size = get_viewport().size
-	$Viewport.size = main_viewport_size
+	#$Viewport.size = main_viewport_size
 	bg_node.rect_size = main_viewport_size
 	bg_node.rect_position = Vector2.ZERO
 	pass

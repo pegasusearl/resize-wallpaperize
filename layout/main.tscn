@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scripts/DrawGrid.gd" type="Script" id=1]
 [ext_resource path="res://scripts/ImageLoader.gd" type="Script" id=2]
@@ -21,9 +21,6 @@
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 1 )
-
-[sub_resource type="ViewportTexture" id=7]
-viewport_path = NodePath("ImageViewer/Viewport")
 
 [sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.92549, 0.301961, 0.490196, 1 )
@@ -72,19 +69,12 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Viewport" type="Viewport" parent="ImageViewer"]
-size = Vector2( 2, 2 )
-handle_input_locally = false
-render_target_v_flip = true
-render_target_update_mode = 3
-gui_disable_input = true
+[node name="Viewport" type="Control" parent="ImageViewer"]
 
 [node name="BG" type="Panel" parent="ImageViewer/Viewport"]
 modulate = Color( 0, 0, 0, 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -1840.0
-margin_bottom = -1011.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 2 )
 __meta__ = {
@@ -92,8 +82,8 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="ImageViewer/Viewport"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 mouse_filter = 2
 texture = ExtResource( 8 )
 expand = true
@@ -101,12 +91,6 @@ stretch_mode = 7
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="Viewer" type="TextureRect" parent="ImageViewer"]
-margin_right = 1920.0
-margin_bottom = 1080.0
-mouse_filter = 2
-texture = SubResource( 7 )
 
 [node name="DrawGrid" type="Node2D" parent="ImageViewer"]
 visible = false
