@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://scripts/DrawGrid.gd" type="Script" id=1]
 [ext_resource path="res://scripts/ImageLoader.gd" type="Script" id=2]
@@ -9,6 +9,8 @@
 [ext_resource path="res://assets/tests/85672481_p0.webp" type="Texture" id=7]
 [ext_resource path="res://assets/85774890_p0_resized.jpg" type="Texture" id=8]
 [ext_resource path="res://assets/selection.svg" type="Texture" id=9]
+[ext_resource path="res://assets/path1323.png" type="Texture" id=10]
+[ext_resource path="res://assets/circle1325.png" type="Texture" id=11]
 [ext_resource path="res://assets/tests/83628836_p0.webp" type="Texture" id=12]
 [ext_resource path="res://assets/tests/89306550_p0.webp" type="Texture" id=13]
 [ext_resource path="res://assets/tests/88787164_p0.webp" type="Texture" id=14]
@@ -378,17 +380,57 @@ margin_right = 1920.0
 margin_bottom = 1080.0
 alignment = 1
 
-[node name="Label" type="Label" parent="Operation/VBoxContainer"]
-margin_top = 500.0
+[node name="ProgressBar" type="ProgressBar" parent="Operation/VBoxContainer"]
+visible = false
+margin_top = 284.0
 margin_right = 1920.0
-margin_bottom = 538.0
+margin_bottom = 322.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Operation/VBoxContainer"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="Operation/VBoxContainer/ScrollContainer"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureProgress" type="TextureProgress" parent="Operation/VBoxContainer/ScrollContainer/CenterContainer"]
+margin_left = 704.0
+margin_top = 284.0
+margin_right = 1216.0
+margin_bottom = 796.0
+size_flags_horizontal = 4
+texture_under = ExtResource( 10 )
+texture_progress = ExtResource( 11 )
+fill_mode = 4
+
+[node name="Label" type="Label" parent="Operation/VBoxContainer/ScrollContainer/CenterContainer/TextureProgress"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -224.0
+margin_top = -19.0
+margin_right = 224.0
+margin_bottom = 19.0
 text = "Creating wallpaper..."
 align = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="Operation/VBoxContainer"]
-margin_top = 542.0
-margin_right = 1920.0
-margin_bottom = 580.0
+[node name="Label2" type="Label" parent="Operation/VBoxContainer/ScrollContainer/CenterContainer/TextureProgress"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -208.0
+margin_top = 12.0
+margin_right = 216.0
+margin_bottom = 50.0
+text = "999/999"
+align = 1
 
 [connection signal="pressed" from="ImageViewer/Panel/StickUp" to="ImageViewer" method="_on_StickUp_pressed"]
 [connection signal="pressed" from="ImageViewer/Panel/StickLeft" to="ImageViewer" method="_on_StickLeft_pressed"]

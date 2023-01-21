@@ -70,9 +70,10 @@ func start_convert_operation():
 	
 	var image_list = $ImageViewer/NewImageList
 	var image_viewer = $ImageViewer
-	var progress_bar = $Operation/VBoxContainer/ProgressBar
+	var progress_bar = $Operation/VBoxContainer/ScrollContainer/CenterContainer/TextureProgress
 	var operation_node = $Operation
-	var operation_label = $Operation/VBoxContainer/Label
+	var operation_label = $Operation/VBoxContainer/ScrollContainer/CenterContainer/TextureProgress/Label
+	var progress_label = $Operation/VBoxContainer/ScrollContainer/CenterContainer/TextureProgress/Label2
 	
 	var unignored_list = []
 	for section in image_list.config.get_sections():
@@ -86,6 +87,7 @@ func start_convert_operation():
 	progress_bar.max_value = unignored_list.size()
 	progress_bar.value = 0
 	operation_label.text = str("Converting ",progress_bar.max_value," images...")
+	progress_label.text = str(progress_bar.value,"/",progress_bar.max_value)
 	
 	operation_in_progress = true
 	operation_node.show()
@@ -99,6 +101,7 @@ func start_convert_operation():
 		progress_bar.value += 1
 		image_list.config.set_value(section,"converted",true)
 		image_list.config.save(CurrentDirectory.config_path)
+		progress_label.text = str(progress_bar.value,"/",progress_bar.max_value)
 		yield(get_tree(),"idle_frame")
 	
 	operation_node.hide()

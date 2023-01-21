@@ -1,13 +1,13 @@
 extends MarginContainer
 
 
-onready var new_width = $VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer/Width
-onready var new_height = $VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer/Height
-onready var new_path = $VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer/NewPath
-onready var new_source_path = $VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2/SourcePath
+onready var new_width = $Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer/Width
+onready var new_height = $Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer/Height
+onready var new_path = $Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer/NewPath
+onready var new_source_path = $Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2/SourcePath
 
 onready var error_node = $Popup/Error
-onready var recent_project_node = $VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer/RecentProjectList
+onready var recent_project_node = $Pages/Projects/HBoxContainer3/PanelContainer2/VBoxContainer/RecentProjectList
 onready var settings = ConfigFile.new()
 
 #file manager
@@ -44,8 +44,8 @@ func _exit_tree():
 
 
 func _on_Go_pressed():
-	CurrentDirectory.source = $VBoxContainer/HBoxContainer2/SourceDir.text
-	CurrentDirectory.target = $VBoxContainer/HBoxContainer/TargetDir.text
+	CurrentDirectory.source = $Pages/Projects/HBoxContainer2/SourceDir.text
+	CurrentDirectory.target = $Pages/Projects/HBoxContainer/TargetDir.text
 	get_tree().change_scene("res://layout/main.tscn")
 
 

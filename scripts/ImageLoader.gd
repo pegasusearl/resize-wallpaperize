@@ -28,6 +28,7 @@ func _ready():
 	var main_viewport_size = get_viewport().size
 	print(main_viewport_size)
 	bg_node.rect_size = main_viewport_size
+	node.rect_size = main_viewport_size
 	bg_node.rect_position = Vector2.ZERO
 
 

@@ -32,75 +32,83 @@ custom_constants/margin_left = 32
 custom_constants/margin_bottom = 32
 script = ExtResource( 2 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Pages" type="TabContainer" parent="."]
 margin_left = 32.0
 margin_top = 32.0
 margin_right = 1888.0
 margin_bottom = 1048.0
+
+[node name="Projects" type="VBoxContainer" parent="Pages"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 56.0
+margin_right = -4.0
+margin_bottom = -4.0
 custom_constants/separation = 14
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1856.0
-margin_bottom = 54.0
+[node name="HBoxContainer4" type="HBoxContainer" parent="Pages/Projects"]
+margin_right = 1848.0
 alignment = 2
 
-[node name="Settings" type="Button" parent="VBoxContainer/HBoxContainer4"]
-margin_left = 1796.0
-margin_right = 1856.0
+[node name="Settings" type="Button" parent="Pages/Projects/HBoxContainer4"]
+visible = false
+margin_left = 1788.0
+margin_right = 1848.0
 margin_bottom = 54.0
 icon = ExtResource( 4 )
 
-[node name="HBoxContainer3" type="GridContainer" parent="VBoxContainer"]
-margin_top = 68.0
-margin_right = 1856.0
-margin_bottom = 1016.0
+[node name="HBoxContainer3" type="GridContainer" parent="Pages/Projects"]
+margin_top = 14.0
+margin_right = 1848.0
+margin_bottom = 956.0
 size_flags_vertical = 3
 columns = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer3"]
-margin_right = 926.0
-margin_bottom = 948.0
+[node name="PanelContainer" type="PanelContainer" parent="Pages/Projects/HBoxContainer3"]
+margin_right = 922.0
+margin_bottom = 942.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Pages/Projects/HBoxContainer3/PanelContainer"]
 margin_left = 32.0
 margin_top = 32.0
-margin_right = 894.0
-margin_bottom = 916.0
+margin_right = 890.0
+margin_bottom = 910.0
 custom_constants/separation = 42
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_top = 165.0
-margin_right = 862.0
-margin_bottom = 239.0
+[node name="Label" type="Label" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer"]
+margin_top = 162.0
+margin_right = 858.0
+margin_bottom = 236.0
 custom_fonts/font = ExtResource( 3 )
 text = "New Project"
 align = 1
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_left = 325.0
-margin_top = 281.0
-margin_right = 537.0
-margin_bottom = 381.0
+[node name="GridContainer" type="GridContainer" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer"]
+margin_left = 323.0
+margin_top = 278.0
+margin_right = 535.0
+margin_bottom = 378.0
 size_flags_horizontal = 4
 columns = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer"]
+[node name="Label" type="Label" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer"]
 margin_top = 5.0
 margin_right = 102.0
 margin_bottom = 43.0
 text = "Width"
 
-[node name="Width" type="LineEdit" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer"]
+[node name="Width" type="LineEdit" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer"]
 margin_left = 106.0
 margin_right = 212.0
 margin_bottom = 48.0
 placeholder_text = "1920"
 
-[node name="label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer"]
+[node name="label" type="Label" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer"]
 margin_top = 57.0
 margin_right = 102.0
 margin_bottom = 95.0
@@ -108,132 +116,132 @@ text = "Height"
 align = 1
 valign = 1
 
-[node name="Height" type="LineEdit" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer"]
+[node name="Height" type="LineEdit" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/GridContainer"]
 margin_left = 106.0
 margin_top = 52.0
 margin_right = 212.0
 margin_bottom = 100.0
 placeholder_text = "1080"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_top = 423.0
-margin_right = 862.0
-margin_bottom = 471.0
+[node name="HBoxContainer" type="HBoxContainer" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer"]
+margin_top = 420.0
+margin_right = 858.0
+margin_bottom = 468.0
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer"]
 margin_top = 5.0
 margin_right = 70.0
 margin_bottom = 43.0
 text = "Path"
 
-[node name="NewPath" type="LineEdit" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="NewPath" type="LineEdit" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer"]
 margin_left = 74.0
-margin_right = 731.0
+margin_right = 727.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
 
-[node name="Browse" type="Button" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer"]
-margin_left = 735.0
-margin_right = 862.0
+[node name="Browse" type="Button" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer"]
+margin_left = 731.0
+margin_right = 858.0
 margin_bottom = 48.0
 text = "Browse"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_top = 513.0
-margin_right = 862.0
-margin_bottom = 633.0
+[node name="HBoxContainer2" type="HBoxContainer" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer"]
+margin_top = 510.0
+margin_right = 858.0
+margin_bottom = 630.0
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2"]
 margin_right = 128.0
 margin_bottom = 120.0
 rect_min_size = Vector2( 128, 0 )
 text = "Image Folder Sources"
 autowrap = true
 
-[node name="SourcePath" type="LineEdit" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="SourcePath" type="LineEdit" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 132.0
-margin_right = 731.0
+margin_right = 727.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
 
-[node name="BrowseSource" type="Button" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 735.0
-margin_right = 862.0
+[node name="BrowseSource" type="Button" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 731.0
+margin_right = 858.0
 margin_bottom = 120.0
 text = "Browse"
 
-[node name="CreateNew" type="Button" parent="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer"]
-margin_left = 383.0
-margin_top = 675.0
-margin_right = 479.0
-margin_bottom = 719.0
+[node name="CreateNew" type="Button" parent="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer"]
+margin_left = 381.0
+margin_top = 672.0
+margin_right = 477.0
+margin_bottom = 716.0
 size_flags_horizontal = 4
 text = "Start!"
 
-[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/HBoxContainer3"]
-margin_left = 930.0
-margin_right = 1856.0
-margin_bottom = 948.0
+[node name="PanelContainer2" type="PanelContainer" parent="Pages/Projects/HBoxContainer3"]
+margin_left = 926.0
+margin_right = 1848.0
+margin_bottom = 942.0
 size_flags_horizontal = 3
 custom_styles/panel = SubResource( 1 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/PanelContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Pages/Projects/HBoxContainer3/PanelContainer2"]
 margin_left = 32.0
 margin_top = 32.0
-margin_right = 894.0
-margin_bottom = 916.0
+margin_right = 890.0
+margin_bottom = 910.0
 custom_constants/separation = 42
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
-margin_right = 862.0
+[node name="Label" type="Label" parent="Pages/Projects/HBoxContainer3/PanelContainer2/VBoxContainer"]
+margin_right = 858.0
 margin_bottom = 74.0
 custom_fonts/font = ExtResource( 3 )
 text = "Open Project"
 align = 1
 
-[node name="Open" type="Button" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
+[node name="Open" type="Button" parent="Pages/Projects/HBoxContainer3/PanelContainer2/VBoxContainer"]
 margin_top = 116.0
-margin_right = 862.0
+margin_right = 858.0
 margin_bottom = 160.0
 text = "Open"
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="Pages/Projects/HBoxContainer3/PanelContainer2/VBoxContainer"]
 margin_top = 202.0
-margin_right = 862.0
+margin_right = 858.0
 margin_bottom = 206.0
 
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
+[node name="Label2" type="Label" parent="Pages/Projects/HBoxContainer3/PanelContainer2/VBoxContainer"]
 margin_top = 248.0
-margin_right = 862.0
+margin_right = 858.0
 margin_bottom = 286.0
 text = "Recent:"
 
-[node name="RecentProjectList" type="ItemList" parent="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer"]
+[node name="RecentProjectList" type="ItemList" parent="Pages/Projects/HBoxContainer3/PanelContainer2/VBoxContainer"]
 margin_top = 328.0
-margin_right = 862.0
-margin_bottom = 884.0
+margin_right = 858.0
+margin_bottom = 878.0
 size_flags_vertical = 3
 
-[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="Pages/Projects"]
 visible = false
 margin_top = 1012.0
 margin_right = 1856.0
 margin_bottom = 1016.0
 
-[node name="Label2" type="Label" parent="VBoxContainer"]
+[node name="Label2" type="Label" parent="Pages/Projects"]
 visible = false
 margin_top = 624.0
 margin_right = 1856.0
 margin_bottom = 662.0
 text = "Source Directory"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Pages/Projects"]
 visible = false
 margin_top = 968.0
 margin_right = 1856.0
 margin_bottom = 1016.0
 
-[node name="SourceDir" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+[node name="SourceDir" type="LineEdit" parent="Pages/Projects/HBoxContainer2"]
 margin_right = 1725.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
@@ -241,32 +249,32 @@ text = "/mnt/warehouse/Pictures/Pixiv"
 caret_blink = true
 caret_blink_speed = 0.5
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer2"]
+[node name="Button" type="Button" parent="Pages/Projects/HBoxContainer2"]
 margin_left = 1729.0
 margin_right = 1856.0
 margin_bottom = 48.0
 text = "Browse"
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="Pages/Projects"]
 visible = false
 margin_top = 738.0
 margin_right = 1856.0
 margin_bottom = 742.0
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="Pages/Projects"]
 visible = false
 margin_top = 756.0
 margin_right = 1856.0
 margin_bottom = 794.0
 text = "Target Directory"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Pages/Projects"]
 visible = false
 margin_top = 808.0
 margin_right = 1856.0
 margin_bottom = 856.0
 
-[node name="TargetDir" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+[node name="TargetDir" type="LineEdit" parent="Pages/Projects/HBoxContainer"]
 margin_right = 1725.0
 margin_bottom = 48.0
 size_flags_horizontal = 3
@@ -274,25 +282,87 @@ text = "/mnt/warehouse/Pictures/Wallpaper/Pixiv"
 caret_blink = true
 caret_blink_speed = 0.5
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="Pages/Projects/HBoxContainer"]
 margin_left = 1729.0
 margin_right = 1856.0
 margin_bottom = 48.0
 text = "Browse"
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="Pages/Projects"]
 visible = false
 margin_top = 1012.0
 margin_right = 1856.0
 margin_bottom = 1016.0
 
-[node name="Go" type="Button" parent="VBoxContainer"]
+[node name="Go" type="Button" parent="Pages/Projects"]
 visible = false
 margin_top = 888.0
 margin_right = 1856.0
 margin_bottom = 1016.0
 rect_min_size = Vector2( 0, 128 )
 text = "GO!!"
+
+[node name="Config" type="VBoxContainer" parent="Pages"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 56.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="Label" type="Label" parent="Pages/Config"]
+margin_right = 1848.0
+margin_bottom = 38.0
+text = "Depedency Path"
+
+[node name="MarginContainer" type="MarginContainer" parent="Pages/Config"]
+margin_top = 42.0
+margin_right = 1848.0
+margin_bottom = 166.0
+custom_constants/margin_left = 24
+
+[node name="GridContainer" type="GridContainer" parent="Pages/Config/MarginContainer"]
+margin_left = 24.0
+margin_right = 1848.0
+margin_bottom = 124.0
+custom_constants/vseparation = 12
+custom_constants/hseparation = 24
+columns = 2
+
+[node name="HSeparator" type="HSeparator" parent="Pages/Config/MarginContainer/GridContainer"]
+margin_right = 206.0
+margin_bottom = 4.0
+
+[node name="HSeparator2" type="HSeparator" parent="Pages/Config/MarginContainer/GridContainer"]
+margin_left = 230.0
+margin_right = 1824.0
+margin_bottom = 4.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Pages/Config/MarginContainer/GridContainer"]
+margin_top = 21.0
+margin_right = 206.0
+margin_bottom = 59.0
+text = "Waifu2x"
+
+[node name="LineEdit" type="LineEdit" parent="Pages/Config/MarginContainer/GridContainer"]
+margin_left = 230.0
+margin_top = 16.0
+margin_right = 1824.0
+margin_bottom = 64.0
+
+[node name="Label2" type="Label" parent="Pages/Config/MarginContainer/GridContainer"]
+margin_top = 81.0
+margin_right = 206.0
+margin_bottom = 119.0
+text = "Imagemagick"
+
+[node name="LineEdit2" type="LineEdit" parent="Pages/Config/MarginContainer/GridContainer"]
+margin_left = 230.0
+margin_top = 76.0
+margin_right = 1824.0
+margin_bottom = 124.0
 
 [node name="Popup" type="Control" parent="."]
 margin_left = 32.0
@@ -344,12 +414,12 @@ window_title = "Error."
 dialog_text = "ast arstars tarst r arst rst arst ast"
 dialog_autowrap = true
 
-[connection signal="pressed" from="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer/Browse" to="Popup/NewProject" method="popup_centered"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2/BrowseSource" to="Popup/SourceDir" method="popup_centered"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/CreateNew" to="." method="_on_CreateNew_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer/Open" to="Popup/OpenProject" method="popup_centered"]
-[connection signal="item_activated" from="VBoxContainer/HBoxContainer3/PanelContainer2/VBoxContainer/RecentProjectList" to="." method="_on_RecentProjectList_item_activated"]
-[connection signal="pressed" from="VBoxContainer/Go" to="." method="_on_Go_pressed"]
-[connection signal="dir_selected" from="Popup/NewProject" to="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer/NewPath" method="set_text"]
+[connection signal="pressed" from="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer/Browse" to="Popup/NewProject" method="popup_centered"]
+[connection signal="pressed" from="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2/BrowseSource" to="Popup/SourceDir" method="popup_centered"]
+[connection signal="pressed" from="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/CreateNew" to="." method="_on_CreateNew_pressed"]
+[connection signal="pressed" from="Pages/Projects/HBoxContainer3/PanelContainer2/VBoxContainer/Open" to="Popup/OpenProject" method="popup_centered"]
+[connection signal="item_activated" from="Pages/Projects/HBoxContainer3/PanelContainer2/VBoxContainer/RecentProjectList" to="." method="_on_RecentProjectList_item_activated"]
+[connection signal="pressed" from="Pages/Projects/Go" to="." method="_on_Go_pressed"]
+[connection signal="dir_selected" from="Popup/NewProject" to="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer/NewPath" method="set_text"]
 [connection signal="file_selected" from="Popup/OpenProject" to="." method="_on_OpenProject_file_selected"]
-[connection signal="dir_selected" from="Popup/SourceDir" to="VBoxContainer/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2/SourcePath" method="set_text"]
+[connection signal="dir_selected" from="Popup/SourceDir" to="Pages/Projects/HBoxContainer3/PanelContainer/VBoxContainer/HBoxContainer2/SourcePath" method="set_text"]
